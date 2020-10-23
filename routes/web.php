@@ -25,4 +25,6 @@ Route::group(['middleware' => ['role:admin|user']], function(){
     Route::get('/admin',function(){
         echo "ruang admin";
     });
+
+    Route::get('/roles',[App\Http\Controllers\RolesController::class,'index'])->name('roles');
 });
