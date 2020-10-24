@@ -9,7 +9,7 @@ class RolesController extends Controller
 {
     //
     public function index() {
-        $roles = Role::paginate(1);
-        return view('roles',['roles' => $roles]);
+        $roles = Role::simplePaginate(2);
+        return view('dashboard.roles.roles',['roles' => $roles]);
     }
 }
