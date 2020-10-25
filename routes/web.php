@@ -22,7 +22,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::group(['middleware' => ['role:admin']], function(){
+Route::group(['middleware' => ['auth','role:admin']], function(){
     Route::get('/roles',[App\Http\Controllers\RolesController::class,'index'])->name('roles');
     Route::get('/roles/create',[App\Http\Controllers\RolesController::class,'create'])->name('roles_create');
     Route::post('/roles',[App\Http\Controllers\RolesController::class,'save'])->name('roles_save');

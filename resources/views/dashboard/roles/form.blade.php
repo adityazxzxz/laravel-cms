@@ -22,21 +22,26 @@
 
     <!-- Default box -->
     <div class="card ">
-    @if(Session::has('error'))
-    <div class="alert alert-danger">
-      {{Session::get('error')}}
-      @php
-        Session::forget('error');
-      @endphp
-    </div>
-    @endif
+        @if(Session::has('error'))
+        <div class="alert alert-danger">
+            {{Session::get('error')}}
+            @php
+            Session::forget('error');
+            @endphp
+        </div>
+        @endif
         <div class="card-body">
             <form method="post" action="{{route('roles_save')}}">
                 @csrf
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="inputrole">Role Name</label>
-                        <input type="text" class="form-control" id="inputrole" placeholder="Role name" name="name">
+                        <input type="text" class="form-control @error('name') is-invalid @enderror" id="inputrole" placeholder="Role name" name="name" value="{{old('name')}}">
+                        @error('name')
+                        <small id="passwordHelp" class="text-danger">
+                        {{ $message }}
+                        </small>
+                        @enderror
                     </div>
 
                 </div>

@@ -18,6 +18,9 @@ class RolesController extends Controller
     }
 
     public function save(Request $request){
+        $validateData = $request->validate([
+            'name' => ['required']
+        ]);
         $name = $request->input('name');
         $res = Role::firstOrCreate(
             ['name' => $name]
@@ -25,7 +28,7 @@ class RolesController extends Controller
         if($res->wasRecentlyCreated){
             return redirect()->route('roles')->with('success','Berhasil menyimpan role');
         }else{
-            return back()->with('error','Role sudah ada');
+            return back()->withInput()->with('error','Role sudah ada');
         }
         
     }
