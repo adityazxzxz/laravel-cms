@@ -22,13 +22,21 @@
 
     <!-- Default box -->
     <div class="card ">
+    @if(Session::has('error'))
+    <div class="alert alert-danger">
+      {{Session::get('error')}}
+      @php
+        Session::forget('error');
+      @endphp
+    </div>
+    @endif
         <div class="card-body">
             <form method="post" action="{{route('roles_save')}}">
                 @csrf
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="inputrole">Role Name</label>
-                        <input type="text" class="form-control" id="inputrole" placeholder="Role name" name="role_name">
+                        <input type="text" class="form-control" id="inputrole" placeholder="Role name" name="name">
                     </div>
 
                 </div>

@@ -22,6 +22,14 @@
 
   <!-- Default box -->
   <div class="card ">
+    @if(Session::has('success'))
+    <div class="alert alert-success">
+      {{Session::get('success')}}
+      @php
+        Session::forget('success');
+      @endphp
+    </div>
+    @endif
     <div class="card-body">
       <div class="row mb-4">
         <div class="col-md-6">
