@@ -25,7 +25,7 @@
     <div class="card-body">
       <div class="row mb-4">
         <div class="col-md-6">
-        <button class="btn btn-primary">Add Role</button>
+        <a class="btn btn-primary" href="{{url('roles/create')}}">Add Role</a>
         </div>
         <div class="col-md-6">
           <div style="text-align:right">

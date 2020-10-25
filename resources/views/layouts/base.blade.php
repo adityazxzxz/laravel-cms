@@ -70,7 +70,7 @@
                 <img src="{{url('/dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2" height='50' width="0" alt="User Image">
               </div>
               <div class="info">
-                <a href="#" class="d-block">Alexander Pierce</a>
+                <a href="#" class="d-block">{{Auth::user()->name}}</a>
               </div>
             </div>
             <a href="#" class="dropdown-item">
@@ -108,7 +108,7 @@
             <img src="{{url('/dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
           </div>
           <div class="info">
-            <a href="#" class="d-block">Alexander Pierce</a>
+            <a href="#" class="d-block">{{Auth::user()->name}}</a>
           </div>
         </div>
 

@@ -12,4 +12,12 @@ class RolesController extends Controller
         $roles = Role::simplePaginate(2);
         return view('dashboard.roles.roles',['roles' => $roles]);
     }
+
+    public function create(){
+        return view('dashboard.roles.form');
+    }
+
+    public function save(){
+        return "nice";
+    }
 }
