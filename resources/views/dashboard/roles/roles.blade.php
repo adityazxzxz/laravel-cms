@@ -26,20 +26,24 @@
     <div class="alert alert-success">
       {{Session::get('success')}}
       @php
-        Session::forget('success');
+      Session::forget('success');
       @endphp
     </div>
     @endif
     <div class="card-body">
       <div class="row mb-4">
         <div class="col-md-6">
-        <a class="btn btn-primary" href="{{url('roles/create')}}">Add Role</a>
+          <a class="btn btn-primary" href="{{url('roles/create')}}">Add Role</a>
         </div>
         <div class="col-md-6">
           <div style="text-align:right">
-          <label style="text-align:left">Search
-          <div style="display:inline-block"><input type="search" name="" id="" class="form-control form-control-sm"></div>
-          </label>
+            <label style="text-align:left">Search
+              <div style="display:inline-block">
+                <form action="{{route('roles')}}" method="get">
+                  <input type="search" name="search" id="" class="form-control form-control-sm">
+                </form>
+              </div>
+            </label>
           </div>
         </div>
       </div>
@@ -60,11 +64,9 @@
                 <td class="col-9">{{$role->name}}</td>
                 <td class="col-2">
                   <div style="font-size:20px">
-                  <!-- <a href="{{url('roles/edit/'.$role->id)}}"><i class="ion-edit pr-3"></i></a> -->
-                  <!-- <a href="{{url('roles/delete/'.$role->id)}}"><i class="icon ion-trash-b pr-3"></i></a> -->
-                  <a href="{{route('roles')}}" onclick="delete_role()"><i class="icon ion-trash-b pr-3"></i></a>
-                  <i class="icon ion-eye pr-3"></i>
-                </div>
+                    <a href="{{route('roles')}}" onClick="delete_role('{{$role->id}}')"><i class="icon ion-trash-b pr-3"></i></a>
+                    <i class="icon ion-eye pr-3"></i>
+                  </div>
                 </td>
               </tr>
               @endforeach
@@ -78,11 +80,11 @@
         <input type="hidden" name="role" id="role_id">
       </form>
       <script>
-        function delete_role(){
+        function delete_role(id) {
           event.preventDefault();
           var c = confirm('Are you sure?');
-          if(c){
-            document.getElementById('role_id').value='{{$role->id}}';
+          if (c) {
+            document.getElementById('role_id').value = id;
             document.getElementById('role_delete_form').submit();
           }
         }

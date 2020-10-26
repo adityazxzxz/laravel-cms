@@ -8,8 +8,13 @@ use Spatie\Permission\Models\Role;
 class RolesController extends Controller
 {
     //
-    public function index() {
-        $roles = Role::simplePaginate(10);
+    public function index(Request $request) {
+        if(!empty($request->query('search'))){
+            $roles = Role::where('name','LIKE',$request->query('search').'%')->simplePaginate(10);
+        }else{
+            $roles = Role::simplePaginate(10);
+        }
+        
         return view('dashboard.roles.roles',['roles' => $roles]);
     }
 
