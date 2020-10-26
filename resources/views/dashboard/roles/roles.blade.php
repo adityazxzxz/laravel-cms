@@ -60,8 +60,8 @@
                 <td class="col-9">{{$role->name}}</td>
                 <td class="col-2">
                   <div style="font-size:20px">
-                  <i class="ion-edit pr-3"></i>
-                  <i class="icon ion-ios-trash pr-3"></i>
+                  <!-- <a href="{{url('roles/edit/'.$role->id)}}"><i class="ion-edit pr-3"></i></a> -->
+                  <a href="{{url('roles/delete/'.$role->id)}}"><i class="icon ion-trash-b pr-3"></i></a>
                   <i class="icon ion-eye pr-3"></i>
                 </div>
                 </td>

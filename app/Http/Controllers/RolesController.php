@@ -14,7 +14,10 @@ class RolesController extends Controller
     }
 
     public function create(){
-        return view('dashboard.roles.form');
+        $form = [
+            'action' => route('roles_save')
+        ];
+        return view('dashboard.roles.form',['form' => $form]);
     }
 
     public function save(Request $request){
@@ -31,5 +34,24 @@ class RolesController extends Controller
             return back()->withErrors(['name' => 'Role already exists!'])->withInput();
         }
         
+    }
+
+    public function edit($id){
+        $role = Role::find($id);
+        $form = [
+            'action' => route('roles_update'),
+            'edit' => true
+        ];
+        return view('dashboard.roles.form',['form' => $form,'role'=>$role]);
+    }
+
+    public function delete($id){
+        $role = Role::find($id);
+        $role->delete();
+        if($role){
+            return redirect()->route('roles')->with('success','Role has been deleted!');
+        }else{
+            return redirect()->route('roles')->with('error','Delete failed!');
+        }
     }
 }

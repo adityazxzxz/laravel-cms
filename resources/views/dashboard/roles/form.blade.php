@@ -31,12 +31,15 @@
         </div>
         @endif
         <div class="card-body">
-            <form method="post" action="{{route('roles_save')}}">
+            <form method="post" action="{{$form['action']}}">
                 @csrf
                 <div class="form-row">
                     <div class="form-group col-md-6">
+                        @if(!empty($form['edit']))
+                            <input type="hidden" name="id" value="{{$role->id}}">
+                        @endif
                         <label for="inputrole">Role Name</label>
-                        <input type="text" class="form-control @error('name') is-invalid @enderror" id="inputrole" placeholder="Role name" name="name" value="{{old('name')}}">
+                        <input type="text" class="form-control @error('name') is-invalid @enderror" id="inputrole" placeholder="Role name" name="name" value="{{$role->name ?? old('name')}}">
                         @error('name')
                         <small id="passwordHelp" class="text-danger">
                         {{ $message }}

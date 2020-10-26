@@ -26,5 +26,8 @@ Route::group(['middleware' => ['auth','role:admin']], function(){
     Route::get('/roles',[App\Http\Controllers\RolesController::class,'index'])->name('roles');
     Route::get('/roles/create',[App\Http\Controllers\RolesController::class,'create'])->name('roles_create');
     Route::post('/roles',[App\Http\Controllers\RolesController::class,'save'])->name('roles_save');
+    Route::get('/roles/edit/{id}',[App\Http\Controllers\RolesController::class,'edit'])->name('roles_edit');
+    Route::post('/roles/update',[App\Http\Controllers\RolesController::class,'update'])->name('roles_update');
+    Route::get('/roles/delete/{id}',[App\Http\Controllers\RolesController::class,'delete'])->name('roles_delete');
     
 });
