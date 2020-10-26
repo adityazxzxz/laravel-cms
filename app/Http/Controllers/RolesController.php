@@ -28,7 +28,7 @@ class RolesController extends Controller
         if($res->wasRecentlyCreated){
             return redirect()->route('roles')->with('success','Berhasil menyimpan role');
         }else{
-            return back()->withInput()->with('error','Role sudah ada');
+            return back()->withErrors(['name' => 'Role already exists!'])->withInput();
         }
         
     }
