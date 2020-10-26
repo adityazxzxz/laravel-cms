@@ -62,7 +62,7 @@
                   <div style="font-size:20px">
                   <!-- <a href="{{url('roles/edit/'.$role->id)}}"><i class="ion-edit pr-3"></i></a> -->
                   <!-- <a href="{{url('roles/delete/'.$role->id)}}"><i class="icon ion-trash-b pr-3"></i></a> -->
-                  <a href="{{route('roles')}}" onclick="event.preventDefault();document.getElementById('role_id').value='{{$role->id}}';document.getElementById('role_delete_form').submit()"><i class="icon ion-trash-b pr-3"></i></a>
+                  <a href="{{route('roles')}}" onclick="delete_role()"><i class="icon ion-trash-b pr-3"></i></a>
                   <i class="icon ion-eye pr-3"></i>
                 </div>
                 </td>
@@ -77,6 +77,16 @@
         @csrf
         <input type="hidden" name="role" id="role_id">
       </form>
+      <script>
+        function delete_role(){
+          event.preventDefault();
+          var c = confirm('Are you sure?');
+          if(c){
+            document.getElementById('role_id').value='{{$role->id}}';
+            document.getElementById('role_delete_form').submit();
+          }
+        }
+      </script>
     </div>
     <div class="row">
       <div class="ml-auto mr-5">
