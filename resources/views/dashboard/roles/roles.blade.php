@@ -61,7 +61,8 @@
                 <td class="col-2">
                   <div style="font-size:20px">
                   <!-- <a href="{{url('roles/edit/'.$role->id)}}"><i class="ion-edit pr-3"></i></a> -->
-                  <a href="{{url('roles/delete/'.$role->id)}}"><i class="icon ion-trash-b pr-3"></i></a>
+                  <!-- <a href="{{url('roles/delete/'.$role->id)}}"><i class="icon ion-trash-b pr-3"></i></a> -->
+                  <a href="{{route('roles')}}" onclick="event.preventDefault();document.getElementById('role_id').value='{{$role->id}}';document.getElementById('role_delete_form').submit()"><i class="icon ion-trash-b pr-3"></i></a>
                   <i class="icon ion-eye pr-3"></i>
                 </div>
                 </td>
@@ -72,6 +73,10 @@
           </table>
         </div>
       </div>
+      <form id="role_delete_form" action="{{route('role_delete')}}" method="post">
+        @csrf
+        <input type="hidden" name="role" id="role_id">
+      </form>
     </div>
     <div class="row">
       <div class="ml-auto mr-5">

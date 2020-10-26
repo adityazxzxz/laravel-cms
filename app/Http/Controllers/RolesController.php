@@ -45,8 +45,9 @@ class RolesController extends Controller
         return view('dashboard.roles.form',['form' => $form,'role'=>$role]);
     }
 
-    public function delete($id){
-        $role = Role::find($id);
+    
+    public function delete(Request $request){
+        $role = Role::find($request->role);
         $role->delete();
         if($role){
             return redirect()->route('roles')->with('success','Role has been deleted!');
