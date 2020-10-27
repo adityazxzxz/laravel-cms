@@ -36,15 +36,52 @@
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         @if(!empty($form['edit']))
-                            <input type="hidden" name="id" value="{{$role->id}}">
+                        <input type="hidden" name="id" value="{{$user->id}}">
                         @endif
-                        <label for="inputrole">Role Name</label>
-                        <input type="text" class="form-control @error('name') is-invalid @enderror" id="inputrole" placeholder="Role name" name="name" value="{{$role->name ?? old('name')}}">
-                        @error('name')
-                        <small id="passwordHelp" class="text-danger">
-                        {{ $message }}
-                        </small>
-                        @enderror
+                        <div class="form-group">
+                            <label for="inputrole">Name</label>
+                            <input type="text" class="form-control @error('name') is-invalid @enderror" id="inputrole" placeholder="Name" name="name" value="{{$user->name ?? old('name')}}">
+                            @error('name')
+                            <small id="passwordHelp" class="text-danger">
+                                {{ $message }}
+                            </small>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputrole">Email</label>
+                            <input type="email" class="form-control @error('email') is-invalid @enderror" id="inputrole" placeholder="Name" name="email" value="{{$user->email ?? old('email')}}">
+                            @error('email')
+                            <small id="passwordHelp" class="text-danger">
+                                {{ $message }}
+                            </small>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputrole">Password</label>
+                            <input type="password" class="form-control @error('email') is-invalid @enderror" id="inputrole" placeholder="Name" name="password" value="">
+                            @error('password')
+                            <small id="passwordHelp" class="text-danger">
+                                {{ $message }}
+                            </small>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputrole">Role</label>
+                            <select class="form-control" name="role" id="">
+                                @foreach($roles as $role)
+                                <option value="{{$role->name}}">{{$role->name}}</option>
+                                @endforeach
+
+                            </select>
+                            @error('')
+                            <small id="passwordHelp" class="text-danger">
+                                {{ $message }}
+                            </small>
+                            @enderror
+                        </div>
                     </div>
 
                 </div>
