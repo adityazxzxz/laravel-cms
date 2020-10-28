@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Storage;
 
 class UsersController extends Controller
 {
@@ -13,9 +15,13 @@ class UsersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::simplePaginate(10);
+        if($request->query('search')){
+            $users = User::where('name','LIKE',$request->query('search').'%')->orWhere('email','LIKE',$request->query('search').'%')->simplePaginate(10);
+        }else{
+            $users = User::simplePaginate(10);
+        }
         return view('dashboard.users.users',['users' => $users]);
     }
 
@@ -44,10 +50,31 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
+        $hasImage = false;
+        // if($request->hasFile('image')){
+        //     if($request->file('image')->isValid()){
+        //         $validated = $request->validate([
+        //             'name' => 'string|max:40',
+        //             'image' => 'mimes:jpeg,png|max:1014'
+        //         ]);
+        //         $extension = $request->image->extension();
+        //         $request->image->storeAs('/public',$validated['name'].".".$extension);
+        //         $url = Storage::url($validated['name'].".".$extension);
+        //     }
+        // }
+
+        // $path = Storage::putFile('public/avatars',$request->file('image'));
+        // echo asset('');exit;
+
+        $imageName = Str::random(25).'.'.$request->image->extension();  
+     
+        $request->image->move(public_path('images/avatars'), $imageName);
+
         $admin = User::create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
-            'password' => bcrypt($request->input('password'))
+            'password' => bcrypt($request->input('password')),
+            'avatar' => $imageName ?? ''
         ]);
 
         $admin->assignRole($request->input('role'));

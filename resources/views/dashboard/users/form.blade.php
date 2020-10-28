@@ -31,7 +31,7 @@
         </div>
         @endif
         <div class="card-body">
-            <form method="post" action="{{$form['action']}}">
+            <form method="post" action="{{$form['action']}}" enctype="multipart/form-data">
                 @csrf
                 <div class="form-row">
                     <div class="form-group col-md-6">
@@ -62,6 +62,16 @@
                             <label for="inputrole">Password</label>
                             <input type="password" class="form-control @error('email') is-invalid @enderror" id="inputrole" placeholder="Name" name="password" value="">
                             @error('password')
+                            <small id="passwordHelp" class="text-danger">
+                                {{ $message }}
+                            </small>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputrole">Image</label>
+                            <input type="file" class="form-control @error('file') is-invalid @enderror" id="inputimage" placeholder="Image" name="image" value="">
+                            @error('image')
                             <small id="passwordHelp" class="text-danger">
                                 {{ $message }}
                             </small>

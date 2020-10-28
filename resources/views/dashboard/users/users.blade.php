@@ -39,7 +39,7 @@
           <div style="text-align:right">
             <label style="text-align:left">Search
               <div style="display:inline-block">
-                <form action="{{$form['action'] ?? ''}}" method="get">
+                <form action="{{route('users')}}" method="get">
                   <input type="search" name="search" id="" class="form-control form-control-sm">
                 </form>
               </div>
