@@ -59,7 +59,15 @@
           <a class="nav-link" data-toggle="dropdown" href="#">
             <div class="user-panel">
 
-              <img src="{{url('/dist/img/user2-160x160.jpg')}}" class="img-circle border" alt="User Image">
+              <img 
+              @if(Auth::user()->avatar)
+            src="{{url('/images/avatars/'.Auth::user()->avatar)}}"
+              
+            @else
+            src="{{url('/dist/img/user2-160x160.jpg')}}"
+
+            @endif
+              class="img-circle border" alt="User Image">
             </div>
           </a>
 
@@ -67,7 +75,15 @@
             <div class="dropdown-divider"></div>
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
               <div class="image">
-                <img src="{{url('/dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2" height='50' width="0" alt="User Image">
+                <img 
+                @if(Auth::user()->avatar)
+                src="{{url('/images/avatars/'.Auth::user()->avatar)}}"
+                  
+                @else
+                src="{{url('/dist/img/user2-160x160.jpg')}}"
+
+                @endif
+                class="img-circle elevation-2" height='50' width="0" alt="User Image">
               </div>
               <div class="info">
                 <a href="#" class="d-block">{{Auth::user()->name}}</a>
@@ -105,7 +121,15 @@
         <!-- Sidebar user (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
           <div class="image">
-            <img src="{{url('/dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
+            <img 
+            @if(Auth::user()->avatar)
+            src="{{url('/images/avatars/'.Auth::user()->avatar)}}"
+              
+            @else
+            src="{{url('/dist/img/user2-160x160.jpg')}}"
+
+            @endif
+            class="img-circle elevation-2" alt="User Image">
           </div>
           <div class="info">
             <a href="#" class="d-block">{{Auth::user()->name}}</a>

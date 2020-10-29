@@ -76,7 +76,7 @@ class UsersController extends Controller
             'name' => $request->input('name'),
             'email' => $request->input('email'),
             'password' => bcrypt($request->input('password')),
-            'avatar' => $imageName ?? ''
+            'avatar' => $imageName ?? null
         ]);
 
         $admin->assignRole($request->input('role'));
