@@ -68,7 +68,7 @@
                 <td class="col-2">{{$user->roles[0]->name ?? ''}}</td>
                 <td class="col-1">
                   <div style="font-size:20px">
-                    <a href="{{route('users')}}" onClick="delete_role('{{$user->id}}')"><i class="icon ion-trash-b pr-3"></i></a>
+                    <a href="{{route('users')}}" onClick="delete_user('{{$user->id}}')"><i class="icon ion-trash-b pr-3"></i></a>
                     <i class="icon ion-eye pr-3"></i>
                   </div>
                 </td>
@@ -79,17 +79,17 @@
           </table>
         </div>
       </div>
-      <form id="role_delete_form" action="{{route('role_delete')}}" method="post">
+      <form id="user_delete_form" action="{{route('user_delete')}}" method="post">
         @csrf
-        <input type="hidden" name="role" id="role_id">
+        <input type="hidden" name="user" id="user_id">
       </form>
       <script>
-        function delete_role(id) {
+        function delete_user(id) {
           event.preventDefault();
           var c = confirm('Are you sure?');
           if (c) {
-            document.getElementById('role_id').value = id;
-            document.getElementById('role_delete_form').submit();
+            document.getElementById('user_id').value = id;
+            document.getElementById('user_delete_form').submit();
           }
         }
       </script>

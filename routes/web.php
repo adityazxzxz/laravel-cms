@@ -34,5 +34,6 @@ Route::group(['middleware' => ['auth','role:admin']], function(){
     Route::get('/users',[App\Http\Controllers\UsersController::class,'index'])->name('users');
     Route::get('/users/create',[App\Http\Controllers\UsersController::class,'create'])->name('user_create');
     Route::post('/users',[App\Http\Controllers\UsersController::class,'store'])->name('user_save');
+    Route::post('/users/delete',[App\Http\Controllers\UsersController::class,'delete'])->name('user_delete');
     
 });

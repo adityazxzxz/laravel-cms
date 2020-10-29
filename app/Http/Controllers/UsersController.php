@@ -50,7 +50,7 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        $hasImage = false;
+        $imageName = null;
         // if($request->hasFile('image')){
         //     if($request->file('image')->isValid()){
         //         $validated = $request->validate([
@@ -66,9 +66,11 @@ class UsersController extends Controller
         // $path = Storage::putFile('public/avatars',$request->file('image'));
         // echo asset('');exit;
 
-        $imageName = Str::random(25).'.'.$request->image->extension();  
+        if($request->hasFile('image')){
+            $imageName = Str::random(25).'.'.$request->image->extension();  
      
-        $request->image->move(public_path('images/avatars'), $imageName);
+            $request->image->move(public_path('images/avatars'), $imageName);
+        }
 
         $admin = User::create([
             'name' => $request->input('name'),
@@ -124,5 +126,15 @@ class UsersController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function delete(Request $request){
+        $user = User::find($request->user);
+        $user->delete();
+        if($user){
+            return redirect()->route('users')->with('success','User has been deleted!');
+        }else{
+            return redirect()->route('users')->with('error','Delete failed!');
+        }
     }
 }
