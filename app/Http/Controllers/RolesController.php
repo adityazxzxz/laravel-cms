@@ -7,7 +7,12 @@ use Spatie\Permission\Models\Role;
 
 class RolesController extends Controller
 {
-    //
+    public function __construct(){
+        $this->middleware(['permission:read role'])->only(['index']);
+        $this->middleware(['permission:create role'])->only(['create','save']);
+        $this->middleware(['permission:update role'])->only(['update']);
+        $this->middleware(['permission:delete role'])->only(['delete']);
+    }
     public function index(Request $request) {
         if(!empty($request->query('search'))){
             $roles = Role::where('name','LIKE',$request->query('search').'%')->simplePaginate(10);

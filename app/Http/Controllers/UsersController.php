@@ -10,6 +10,12 @@ use Illuminate\Support\Facades\Storage;
 
 class UsersController extends Controller
 {
+    public function __construct(){
+        $this->middleware(['permission:read user'])->only(['index']);
+        $this->middleware(['permission:create user'])->only(['create','store']);
+        $this->middleware(['permission:update user'])->only(['update','edit']);
+        $this->middleware(['permission:delete user'])->only(['delete']);
+    }
     /**
      * Display a listing of the resource.
      *
