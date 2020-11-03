@@ -1,4 +1,12 @@
 @extends('layouts.base')
+<style>
+.custom-control-label::before, 
+.custom-control-label::after {
+top: .8rem;
+width: 1.25rem;
+height: 1.25rem;
+}
+</style>
 
 @section('content')
 <section class="content-header">
@@ -47,6 +55,23 @@
                         @enderror
                     </div>
 
+                </div>
+                <div class="row mt-5 mb-5">
+                <div class="col-sm-6">
+                    
+                    <!-- checkbox -->
+                    <h5>Permissions</h5>
+                    @foreach($permissions as $permission)
+                        
+                        <div class="icheck-success">
+                        <input type="checkbox" id="permission-{{$permission->id}}" name="permissions[]" value="{{$permission->name}}">
+                        <label for="permission-{{$permission->id}}">
+                        {{Str::upper($permission->name)}}
+                        
+                        </label>
+                      </div>
+                    @endforeach
+                  </div>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Save</button>

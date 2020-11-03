@@ -15,6 +15,8 @@ class UsersController extends Controller
         $this->middleware(['permission:create user'])->only(['create','store']);
         $this->middleware(['permission:update user'])->only(['update','edit']);
         $this->middleware(['permission:delete user'])->only(['delete']);
+
+        
     }
     /**
      * Display a listing of the resource.
@@ -23,6 +25,9 @@ class UsersController extends Controller
      */
     public function index(Request $request)
     {
+        // $tmp = auth()->user();
+
+        // dd($tmp->getAllPermissions()->pluck('name'));exit;
         if($request->query('search')){
             $users = User::where('name','LIKE',$request->query('search').'%')->orWhere('email','LIKE',$request->query('search').'%')->simplePaginate(10);
         }else{
