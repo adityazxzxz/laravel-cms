@@ -30,6 +30,14 @@
       @endphp
     </div>
     @endif
+    @if(Session::has('error'))
+    <div class="alert alert-danger">
+      {{Session::get('error')}}
+      @php
+      Session::forget('error');
+      @endphp
+    </div>
+    @endif
     <div class="card-body">
       <div class="row mb-4">
         <div class="col-md-6">

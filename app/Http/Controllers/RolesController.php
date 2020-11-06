@@ -12,7 +12,7 @@ class RolesController extends Controller
     public function __construct(){
         $this->middleware(['permission:read role'])->only(['index']);
         $this->middleware(['permission:create role'])->only(['create','save']);
-        $this->middleware(['permission:update role'])->only(['update']);
+        $this->middleware(['permission:update role'])->only(['update','edit']);
         $this->middleware(['permission:delete role'])->only(['delete']);
     }
     public function index(Request $request) {
@@ -62,11 +62,14 @@ class RolesController extends Controller
         return view('dashboard.roles.form',['form' => $form,'role'=>$role,'permissions' => $permissions,'permission_role' => $permission_role]);
     }
 
-    public function update(Request $request,$id){
-        $role = Role::find($id);
+    public function update(Request $request){
+        $role = Role::find($request->input('id'));
+        if($role->name === 'super-admin'){
+            return redirect()->route('roles')->with('error','Cannot change super role!');
+        }
         $role->name = $request->input('name');
         $role->save();
-        $role->syncPermissions($request->input('permission'));
+        $role->syncPermissions($request->input('permissions'));
         return redirect()->route('roles')->with('success','Role has been updated!');
     }
 
