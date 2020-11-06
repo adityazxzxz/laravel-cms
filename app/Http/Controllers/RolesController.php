@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\DB;
 
 class RolesController extends Controller
 {
@@ -50,11 +51,23 @@ class RolesController extends Controller
 
     public function edit($id){
         $role = Role::find($id);
+        $permissions = Permission::all();
+        $permission_role = DB::table('role_has_permissions')->where('role_has_permissions.role_id',$id)->pluck('role_has_permissions.permission_id')->toArray();
+        
+
         $form = [
             'action' => route('roles_update'),
             'edit' => true
         ];
-        return view('dashboard.roles.form',['form' => $form,'role'=>$role]);
+        return view('dashboard.roles.form',['form' => $form,'role'=>$role,'permissions' => $permissions,'permission_role' => $permission_role]);
+    }
+
+    public function update(Request $request,$id){
+        $role = Role::find($id);
+        $role->name = $request->input('name');
+        $role->save();
+        $role->syncPermissions($request->input('permission'));
+        return redirect()->route('roles')->with('success','Role has been updated!');
     }
 
     

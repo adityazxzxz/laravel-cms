@@ -64,7 +64,7 @@ height: 1.25rem;
                     @foreach($permissions as $permission)
                         
                         <div class="icheck-success">
-                        <input type="checkbox" id="permission-{{$permission->id}}" name="permissions[]" value="{{$permission->name}}">
+                        <input type="checkbox" @if($permission_role) @if(in_array($permission->id,$permission_role)) checked @endif @endif id="permission-{{$permission->id}}" name="permissions[]" value="{{$permission->name}}">
                         <label for="permission-{{$permission->id}}">
                         {{Str::upper($permission->name)}}
                         

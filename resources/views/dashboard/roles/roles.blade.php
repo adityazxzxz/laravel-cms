@@ -65,6 +65,7 @@
                 <td class="col-2">
                   <div style="font-size:20px">
                     <a href="{{route('roles')}}" onClick="delete_role('{{$role->id}}')"><i class="icon ion-trash-b pr-3"></i></a>
+                    <a href="{{route('roles_edit',['id' => $role->id])}}"><i class="icon ion-edit pr-3"></i></a>
                     <i class="icon ion-eye pr-3"></i>
                   </div>
                 </td>
