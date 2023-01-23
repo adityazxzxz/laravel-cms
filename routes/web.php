@@ -22,13 +22,15 @@ Route::get('/', function () {
 });
 
 
-Route::get('/login', [LoginController::class, 'index']);
-
-Route::resource('/users', UserController::class);
-Route::resource('/permissions', PermissionController::class);
-Route::resource('/roles', RoleController::class);
-
-Route::get('/dashboard', function () {
-    return view('cms.pages.dashboard');
-});
+Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'authenticate']);
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('cms.pages.dashboard');
+    });
+    Route::post('/logout', [LoginController::class, 'logout']);
+    Route::resource('/users', UserController::class);
+    Route::resource('/permissions', PermissionController::class);
+    Route::resource('/roles', RoleController::class);
+});

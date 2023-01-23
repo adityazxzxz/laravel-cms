@@ -138,7 +138,13 @@
             </a>
 
             <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
-                <img src="{{ asset('img/avatars/avatar.jpg') }}" class="avatar img-fluid rounded me-1" alt="Charles Hall" /> <span class="text-dark">Charles Hall</span>
+
+                @if(auth()->user()->image)
+                <img src="{{ asset('storage/'.auth()->user()->image) }}" class="avatar img-fluid rounded me-1" alt="Charles Hall" />
+                @else
+                <img src="{{ asset('img/avatars/avatar.jpg') }}" class="avatar img-fluid rounded me-1" alt="Charles Hall" />
+                @endif
+                <span class="text-dark">{{ auth()->user()->name }}</span>
             </a>
             <div class="dropdown-menu dropdown-menu-end">
                 <a class="dropdown-item" href="pages-profile.html"><i class="align-middle me-1" data-feather="user"></i> Profile</a>
@@ -147,7 +153,10 @@
                 <a class="dropdown-item" href="index.html"><i class="align-middle me-1" data-feather="settings"></i> Settings & Privacy</a>
                 <a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="help-circle"></i> Help Center</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Log out</a>
+                <form action="/logout" method="post">
+                    @csrf
+                    <button type="submit" class="dropdown-item">Logout</button>
+                </form>
             </div>
         </li>
     </ul>

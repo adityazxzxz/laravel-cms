@@ -25,7 +25,7 @@
                         @csrf
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label">Role Name</label>
-                            <input type="text" name="name" class="form-control" placeholder="ex: creator">
+                            <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" placeholder="ex: creator">
                             @error('name')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -35,8 +35,8 @@
                         <div class="mb-3">
                             @foreach($permissions as $permission)
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="permissions[]" value="{{ $permission->id }}">
-                                <label class="form-check-label">{{ $permission->name }}</label>
+                                <input class="form-check-input" type="checkbox" name="permissions[]" value="{{ $permission->id }}" id="permission-{{ $permission->id }}">
+                                <label for="permission-{{ $permission->id }}" class="form-check-label">{{ $permission->name }}</label>
                             </div>
                             @endforeach
                         </div>

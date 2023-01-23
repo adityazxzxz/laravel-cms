@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
@@ -15,6 +20,9 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+        if (!$request->user()->can('read user') && !$request->user()->hasRole('super')) {
+            return redirect('/dashboard')->with('error', 'No Permission');
+        }
         if ($request->ajax()) {
             return DataTables::of(User::query())
                 ->addColumn('action', function ($user) {
@@ -24,13 +32,18 @@ class UserController extends Controller
         ' . csrf_field() . '
         <button class="badge bg-danger border-0"><span data-feather="trash-2"></span></button>
     </form>';
-                    return $action;
+                    if (!$user->hasRole('super')) {
+                        return $action;
+                    }
+                })
+                ->addColumn('role', function ($user) {
+                    return $user->roles->pluck('name')[0] ?? '';
                 })
                 ->addIndexColumn()
                 ->rawColumns(['action'])
                 ->make();
         }
-        return view('cms.pages.user');
+        return view('cms.pages.user.index');
     }
 
     /**
@@ -40,7 +53,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        $roles = Role::where('name', '!=', 'super')->get();
+        return view('cms.pages.user.create', compact('roles'));
     }
 
     /**
@@ -51,7 +65,31 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|confirmed|min:6',
+            'role' => 'required',
+            'image' => 'image|file|max:1024',
+        ]);
+
+        if ($request->file('image')) {
+            $validatedData['image'] = $request->file('image')->store('profile-image');
+        }
+
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'image' => $validatedData['image']
+        ]);
+
+        $user->assignRole($request->role);
+
+
+
+        return redirect('/users')->with('success', 'User has been added!');
     }
 
     /**
@@ -71,9 +109,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(User $user)
     {
-        //
+        $userrole = $user->getRoleNames();
+        $roles = Role::where('name', '!=', 'super')->get();
+        return view('cms.pages.user.edit', compact('user', 'roles', 'userrole'));
     }
 
     /**
@@ -83,9 +123,45 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
-        //
+        $rules = [
+            'name' => 'required',
+            'email' => 'required',
+            'role' => 'required',
+            'image' => 'image|file|max:1024',
+        ];
+
+
+        if ($request->password) {
+            $rules['password'] = 'required|confirmed|min:6';
+        }
+
+        $validatedData = $request->validate($rules);
+        if ($request->password) {
+            $validatedData['password'] = Hash::make($request->password);
+        }
+
+        if ($request->file('image')) {
+            if ($request->oldImage) {
+                Storage::delete($request->oldImage);
+            }
+            $validatedData['image'] = $request->file('image')->store('profile-image');
+        }
+
+        try {
+            User::where('id', $user->id)->update([
+                'name' => $request->name,
+                'email' => $request->email,
+                'image' => $validatedData['image']
+            ]);
+            $user->assignRole($request->role);
+        } catch (QueryException $e) {
+            Log::error('Error update user ' . $e);
+            return redirect()->back()->with('error', 'Failed!');
+        }
+
+        return redirect('/users')->with('success', $user->email . ' has been updated');
     }
 
     /**
@@ -94,8 +170,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        //
+        User::where('id', $user->id)->delete();
+        return redirect('/users')->with('success', $user->email . ' has been deleted');
     }
 }

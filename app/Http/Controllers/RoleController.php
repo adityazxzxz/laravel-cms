@@ -58,16 +58,12 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required',
+            'name' => 'required|unique:roles',
             'permissions' => 'required|array|min:1',
         ]);
 
-        try {
-            $role = Role::create(['name' => $validatedData['name']]);
-            $role->givePermissionTo($validatedData['permissions']);
-        } catch (RoleAlreadyExists $e) {
-            return redirect()->back()->with('error', "Role " . $validatedData['name'] . " Already Exists");
-        }
+        $role = Role::create(['name' => $validatedData['name']]);
+        $role->givePermissionTo($validatedData['permissions']);
 
         return redirect('/roles')->with('success', 'Data has been added!');
     }
@@ -103,9 +99,31 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Role $role)
     {
-        //
+        $rules = [
+            'name' => 'required',
+            'permissions' => 'required|array|min:1',
+        ];
+
+        if ($request->name != $role->name) {
+            $rules['name'] = 'required|unique:roles';
+        }
+
+        $validatedData = $request->validate($rules);
+
+
+
+        try {
+            Role::where('id', $role->id)->update([
+                'name' => $request->name
+            ]);
+            $role->syncPermissions($request->permissions);
+        } catch (RoleAlreadyExists $e) {
+            return redirect()->back()->with('error', "Role " . $validatedData['name'] . " Already Exists");
+        }
+
+        return redirect('/roles')->with('success', 'Data has been updated!');
     }
 
     /**
@@ -120,7 +138,7 @@ class RoleController extends Controller
             return redirect('/roles')->with('error', "Role $role->name cannot be delete");
         }
         Role::where('id', $role->id)
-            ->destroy($role);
+            ->delete($role);
         return redirect('/roles')->with('success', "Role $role->name has been deleted!");
     }
 }

@@ -4,11 +4,37 @@
     <div class="mb-3">
         <h1 class="h3 d-inline align-middle">Users Dashboard</h1>
     </div>
+    @if(session()->has('success'))
+    <div class="row">
+        <div class="col-12 col-lg-12">
+            <div class="card" style="background-color:#cbf5d9 ;">
+
+                <div class="card-body">
+                    {{ session('success') }}
+                </div>
+
+            </div>
+        </div>
+    </div>
+    @endif
+    @if(session()->has('error'))
+    <div class="row">
+        <div class="col-12 col-lg-12">
+            <div class="card" style="background-color:#f8d7da ;">
+
+                <div class="card-body">
+                    {{ session('error') }}
+                </div>
+
+            </div>
+        </div>
+    </div>
+    @endif
     <div class="row">
         <div class="col-12 col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <a class="btn btn-primary" href="peserta/create">Add User</a>
+                    <a class="btn btn-primary" href="users/create">Add User</a>
                 </div>
                 <div class="card-body">
                     <table id="myTable" class="display" style="width: 100%;margin-top:15px">
@@ -17,6 +43,7 @@
                                 <th>#</th>
                                 <th>Name</th>
                                 <th>Email</th>
+                                <th>Role</th>
                                 <th class="d-none d-md-table-cell">Action</th>
                             </tr>
                         </thead>
@@ -54,6 +81,10 @@
                 {
                     data: 'email',
                     name: 'email'
+                },
+                {
+                    data: 'role',
+                    name: 'role'
                 },
                 {
                     data: 'action',

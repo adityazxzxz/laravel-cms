@@ -2,7 +2,7 @@
 @section('content')
 <div class="container-fluid p-0">
     <div class="mb-3">
-        <h1 class="h3 d-inline align-middle">Create Role</h1>
+        <h1 class="h3 d-inline align-middle">Update Role</h1>
     </div>
     @if(session()->has('error'))
     <div class="row">
@@ -21,12 +21,13 @@
         <div class="col-12 col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <form method="post" action="{{ route('roles.store') }}">
+                    <form method="post" action="{{ route('roles.store').'/'.$role->id }}">
+                        @method('put')
                         @csrf
                         <input type="hidden" name="role_id" value="{{ $role->id }}">
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label">Role Name</label>
-                            <input type="text" name="name" class="form-control" placeholder="ex: creator">
+                            <input value="{{ @old('name',$role->name) }}" type="text" name="name" class="form-control @error('name') is-invalid @enderror" placeholder="ex: creator">
                             @error('name')
                             <div class="invalid-feedback">
                                 {{ $message }}

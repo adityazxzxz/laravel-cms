@@ -52,7 +52,7 @@ class PermissionController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required'
+            'name' => 'required|unique'
         ]);
         Permission::create($validatedData);
         return redirect('/permissions')->with('success', 'Permission has been added');
@@ -90,7 +90,7 @@ class PermissionController extends Controller
     public function update(Request $request, Permission $permission)
     {
         $validatedData = $request->validate([
-            'name' => 'required'
+            'name' => 'required|unique:permissions'
         ]);
 
         Permission::where('id', $permission->id)

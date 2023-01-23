@@ -13,8 +13,14 @@
                         @csrf
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label">Guard Name</label>
-                            <input value="{{ $permission->name }}" type=" text" class="form-control" name="name" placeholder="ex: create user">
+                            <input value="{{ $permission->name }}" type=" text" class="form-control @error('name') is-invalid @enderror" name="name" placeholder="ex: create user">
+                            @error('name')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                            @enderror
                             <div id="emailHelp" class="form-text">Guard name perlu disesuaikan dengan middleware yg tersedia.</div>
+
                         </div>
                         <button type="submit" class="btn btn-primary">Save</button>
                     </form>
