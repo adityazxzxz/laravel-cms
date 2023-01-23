@@ -43,8 +43,11 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
+        if (!$request->user()->can('create role') && !$request->user()->hasRole('super')) {
+            return redirect('/dashboard')->with('error', 'No Permission');
+        }
         $permissions = Permission::all();
         return view('cms.pages.role.create', compact('permissions'));
     }
@@ -57,6 +60,9 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
+        if (!$request->user()->can('create role') && !$request->user()->hasRole('super')) {
+            return redirect('/dashboard')->with('error', 'No Permission');
+        }
         $validatedData = $request->validate([
             'name' => 'required|unique:roles',
             'permissions' => 'required|array|min:1',
@@ -85,8 +91,11 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
+        if (!$request->user()->can('edit role') && !$request->user()->hasRole('super')) {
+            return redirect('/dashboard')->with('error', 'No Permission');
+        }
         $role = Role::findById($id);
         $permissions = Permission::all();
         return view('cms.pages.role.edit', compact('role', 'permissions'));
@@ -101,6 +110,9 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
+        if (!$request->user()->can('edit role') && !$request->user()->hasRole('super')) {
+            return redirect('/dashboard')->with('error', 'No Permission');
+        }
         $rules = [
             'name' => 'required',
             'permissions' => 'required|array|min:1',
@@ -132,8 +144,11 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Role $role)
+    public function destroy(Request $request, Role $role)
     {
+        if (!$request->user()->can('delete role') && !$request->user()->hasRole('super')) {
+            return redirect('/dashboard')->with('error', 'No Permission');
+        }
         if ($role->name == 'super') {
             return redirect('/roles')->with('error', "Role $role->name cannot be delete");
         }

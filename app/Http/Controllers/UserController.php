@@ -51,8 +51,11 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
+        if (!$request->user()->can('create user') && !$request->user()->hasRole('super')) {
+            return redirect('/dashboard')->with('error', 'No Permission');
+        }
         $roles = Role::where('name', '!=', 'super')->get();
         return view('cms.pages.user.create', compact('roles'));
     }
@@ -65,6 +68,9 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        if (!$request->user()->can('create user') && !$request->user()->hasRole('super')) {
+            return redirect('/dashboard')->with('error', 'No Permission');
+        }
         $validatedData = $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users',
@@ -109,8 +115,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit(Request $request, User $user)
     {
+        if (!$request->user()->can('edit user') && !$request->user()->hasRole('super')) {
+            return redirect('/dashboard')->with('error', 'No Permission');
+        }
         $userrole = $user->getRoleNames();
         $roles = Role::where('name', '!=', 'super')->get();
         return view('cms.pages.user.edit', compact('user', 'roles', 'userrole'));
@@ -125,6 +134,9 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        if (!$request->user()->can('edit user') && !$request->user()->hasRole('super')) {
+            return redirect('/dashboard')->with('error', 'No Permission');
+        }
         $rules = [
             'name' => 'required',
             'email' => 'required',
@@ -170,8 +182,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(Request $request, User $user)
     {
+        if (!$request->user()->can('delete user') && !$request->user()->hasRole('super')) {
+            return redirect('/dashboard')->with('error', 'No Permission');
+        }
         User::where('id', $user->id)->delete();
         return redirect('/users')->with('success', $user->email . ' has been deleted');
     }

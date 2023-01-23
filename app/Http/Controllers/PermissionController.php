@@ -15,6 +15,9 @@ class PermissionController extends Controller
      */
     public function index(Request $request)
     {
+        if (!$request->user()->can('read permission') && !$request->user()->hasRole('super')) {
+            return redirect('/dashboard')->with('error', 'No Permission');
+        }
         if ($request->ajax()) {
             return DataTables::of(Permission::query())
                 ->addColumn('action', function ($permission) {
@@ -38,8 +41,11 @@ class PermissionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
+        if (!$request->user()->can('create permission') && !$request->user()->hasRole('super')) {
+            return redirect('/dashboard')->with('error', 'No Permission');
+        }
         return view('cms.pages.permission.create');
     }
 
@@ -51,6 +57,9 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
+        if (!$request->user()->can('create permission') && !$request->user()->hasRole('super')) {
+            return redirect('/dashboard')->with('error', 'No Permission');
+        }
         $validatedData = $request->validate([
             'name' => 'required|unique'
         ]);
@@ -75,8 +84,11 @@ class PermissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Permission $permission)
+    public function edit(Request $request, Permission $permission)
     {
+        if (!$request->user()->can('edit permission') && !$request->user()->hasRole('super')) {
+            return redirect('/dashboard')->with('error', 'No Permission');
+        }
         return view('cms.pages.permission.edit', compact('permission'));
     }
 
@@ -89,6 +101,9 @@ class PermissionController extends Controller
      */
     public function update(Request $request, Permission $permission)
     {
+        if (!$request->user()->can('edit permission') && !$request->user()->hasRole('super')) {
+            return redirect('/dashboard')->with('error', 'No Permission');
+        }
         $validatedData = $request->validate([
             'name' => 'required|unique:permissions'
         ]);
@@ -104,8 +119,11 @@ class PermissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Permission $permission)
+    public function destroy(Request $request, Permission $permission)
     {
+        if (!$request->user()->can('delete permission') && !$request->user()->hasRole('super')) {
+            return redirect('/dashboard')->with('error', 'No Permission');
+        }
         Permission::destroy($permission->id);
         return redirect('/permissions')->with('success', "Permission $permission->name has been deleted!");
     }
